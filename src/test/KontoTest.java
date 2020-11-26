@@ -139,7 +139,6 @@ public class KontoTest {
                 correctIBAN++;
             }
         }
-
         assertEquals(3, correctIBAN);
     }
 
