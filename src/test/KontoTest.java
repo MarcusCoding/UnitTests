@@ -1,5 +1,6 @@
 package test;
 
+import main.Bank;
 import main.Konto;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -13,7 +14,7 @@ public class KontoTest {
     Konto konto2 = null;
     Konto konto3 = null;
 
-    static ArrayList<String> ibans = new ArrayList<String>() {{
+    static ArrayList<String> ibans = new ArrayList<>() {{
         //falsch
         add("DE221001005001234456789");
         add("AL902081100800000010393");
@@ -31,6 +32,26 @@ public class KontoTest {
         this.konto3 = new Konto("41500105170123456789");
     }
 
+
+    @org.junit.jupiter.api.Test
+    public void getBankBLZ(){
+        Bank bankofErfurt = Bank.getInstance();
+        assertEquals("70090100", bankofErfurt.getBLZ());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void getBankName(){
+        Bank bankofErfurt = Bank.getInstance();
+        assertEquals("Bank of Erfurt", bankofErfurt.getName());
+    }
+
+    @org.junit.jupiter.api.Test
+    public void getBankInstance(){
+        Bank bankofErfurt = Bank.getInstance();
+        Bank bank2 = Bank.getInstance();
+        assertEquals(bankofErfurt.getCreatedAt(), bank2.getCreatedAt());
+    }
+
     @org.junit.jupiter.api.Test
     public void testIBANUebernommen() {
         assertEquals("DE08700901001234567890", konto1.getIban());
@@ -38,7 +59,7 @@ public class KontoTest {
 
     @org.junit.jupiter.api.Test
     public void testIBANNichtUebernommen() {
-        assertEquals(null, konto3.getIban());
+        assertNull(konto3.getIban());
     }
 
     // Kontostand am Anfang 0
@@ -133,9 +154,8 @@ public class KontoTest {
     public void testIBANList() {
         int correctIBAN = 0;
 
-        for(int i = 0; i < ibans.size(); i++){
-            if(konto1.isIBANValid(ibans.get(i)))
-            {
+        for (String iban : ibans) {
+            if (konto1.isIBANValid(iban)) {
                 correctIBAN++;
             }
         }
